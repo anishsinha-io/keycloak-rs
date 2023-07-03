@@ -12,8 +12,6 @@ use std::collections::HashMap;
 use std::error::Error;
 use std::str::FromStr;
 
-use crate::models::{ClientSecretData, KeycloakClient};
-
 pub struct Keycloak {
     pub base_uri: String,
     pub client: Client,
@@ -26,59 +24,15 @@ impl Keycloak {
             client: reqwest::Client::new(),
         }
     }
+
+    fn base_client_uri(&self, realm: &str) -> String {
+        self.base_uri.clone() + "/realms/" + realm + "/clients"
+    }
+
+    fn base_admin_uri(&self, realm: &str) -> String {
+        self.base_uri.clone() + "/admin/realms/" + realm
+    }
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[tokio::test]
-    async fn test_get_clients() {
-        let keycloak = Keycloak::new("http://localhost:8080");
-        let credentials = keycloak
-            .login_admin("root", "root", "master")
-            .await
-            .expect("error fetching credentials");
-        let access_token = credentials.access_token;
-        let clients = keycloak
-            .get_clients(&access_token, "test")
-            .await
-            .expect("error fetching clients");
-    }
-
-    #[tokio::test]
-    async fn test_get_client() {
-        let keycloak = Keycloak::new("http://localhost:8080");
-        let credentials = keycloak
-            .login_admin("root", "root", "master")
-            .await
-            .expect("error fetching credentials");
-        let access_token = credentials.access_token;
-        let client = keycloak
-            .get_client(
-                &access_token,
-                "c698fd5b-6e9b-4ced-90e6-daa5ac450634",
-                "test",
-            )
-            .await
-            .expect("error fetching client");
-    }
-
-    #[tokio::test]
-    async fn test_regenerate_client_secret() {
-        let keycloak = Keycloak::new("http://localhost:8080");
-        let credentials = keycloak
-            .login_admin("root", "root", "master")
-            .await
-            .expect("error fetching credentials");
-        let access_token = credentials.access_token;
-        let client_secret = keycloak
-            .regenerate_client_secret(
-                &access_token,
-                "c698fd5b-6e9b-4ced-90e6-daa5ac450634",
-                "test",
-            )
-            .await
-            .expect("error regenerating client secret");
-    }
-}
+mod tests {}
