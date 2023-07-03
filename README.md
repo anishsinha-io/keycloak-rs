@@ -1,4 +1,4 @@
-![rust](https://github.com/anish-sinha1/core-/actions/workflows/rust.yaml/badge.svg)
+![rust](https://github.com/anish-sinha1/core-/actions/workflows/rust.yml/badge.svg)
 
 ### keycloak-rs
 
