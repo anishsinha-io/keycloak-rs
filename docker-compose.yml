@@ -1,0 +1,30 @@
+version: "3.8"
+
+name: dichromatic
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_INITDB_ARGS: "-A md5"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    hostname: postgres
+  keycloak:
+    container_name: keycloak
+    build:
+      context: ./docker/keycloak
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    restart: always
+    hostname: keycloak

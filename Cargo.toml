@@ -1,0 +1,12 @@
+[package]
+edition = "2021"
+name = "keycloak-rs"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hyper = {version = "0.14.27", features = ["full"]}
+reqwest = {version="0.11.18", features=["json"]}
+serde = { version = "1.0.164", features = ["derive"] }
+tokio = {version = "1.29.1", features = ["macros", "rt-multi-thread"]}
