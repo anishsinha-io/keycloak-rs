@@ -377,8 +377,19 @@ mod tests {
             )
             .await
             .expect("error creating new client");
-        if let Some(client) = new_client {
-            println!("{:#?}", client)
-        }
+    }
+
+    #[tokio::test]
+    async fn test_get_client_by_client_id() {
+        let keycloak = Keycloak::new("http://localhost:8080");
+        let credentials = keycloak
+            .login_admin("root", "root", "master")
+            .await
+            .expect("error fetching credentials");
+        let access_token = credentials.access_token;
+        let client = keycloak
+            .get_client_by_client_id(&access_token, "test", "i-love-jenny")
+            .await
+            .expect("error creating new client");
     }
 }
